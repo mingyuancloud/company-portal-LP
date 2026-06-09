@@ -11,8 +11,9 @@
 <!-- ═══ Login Page ═══ -->
 <div id="loginPage" class="login-wrapper">
   <div class="login-card">
-    <h1>企业后台</h1>
-    <p class="sub">请登录以查看企业数据</p>
+    <div class="logo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="22" height="18" rx="2"/><path d="M5 7h4M5 11h6M5 15h3M16 7h3M16 11h3M16 15h3"/></svg></div>
+    <h1>企业集合管理</h1>
+    <p class="sub">登录以查看和管理企业数据</p>
     <div class="login-field">
       <label>用户名</label>
       <input type="text" id="loginUser" placeholder="请输入用户名" autocomplete="username">
@@ -32,14 +33,15 @@
 
   <!-- Sidebar -->
   <aside class="sidebar">
-    <div class="side-logo">🏢 企业后台 <span>v2.0</span></div>
+    <div class="side-logo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="22" height="18" rx="2"/><path d="M5 7h4M5 11h6M5 15h3M16 7h3M16 11h3M16 15h3"/></svg>企业集合管理</div>
     <nav class="side-nav">
+      <div class="side-divider">Workspace</div>
       <div class="side-item active" data-page="dashboard" onclick="switchPage('dashboard')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
         <span>企业总览</span>
       </div>
       <div class="side-item" data-page="users" onclick="switchPage('users')" id="navUsers">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="7" r="4"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><path d="M21 10a3 3 0 0 0-6 0v8"/></svg>
         <span>用户管理</span>
       </div>
     </nav>
@@ -56,9 +58,9 @@
     <header class="top-bar">
       <h2 id="pageTitle">企业总览</h2>
       <div class="top-search"><input type="text" id="searchInput" placeholder="搜索企业名称…" oninput="doSearch()"></div>
-      <button class="btn btn-outline btn-sm" onclick="downloadTemplate()">📥 模板</button>
-      <button class="btn btn-outline btn-sm" onclick="showImport()">📤 导入</button>
-      <button class="btn btn-primary btn-sm" onclick="showCompanyForm()">+ 添加企业</button>
+      <button class="btn btn-ghost btn-sm" onclick="downloadTemplate()">下载模板</button>
+      <button class="btn btn-ghost btn-sm" onclick="showImport()">导入数据</button>
+      <button class="btn btn-primary btn-sm" onclick="showCompanyForm()">添加企业</button>
     </header>
 
     <div class="content" id="contentArea"></div>
