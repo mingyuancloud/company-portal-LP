@@ -80,11 +80,12 @@
 <!-- ═══ Confirm ═══ -->
 <div id="confirmContainer"></div>
 
-<!-- Supabase SDK -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
-<!-- Config: 部署前替换为你的 Supabase 项目信息 -->
+<!-- Supabase SDK (首选 CDN + 备用 CDN) -->
+<script src="https://unpkg.com/@supabase/supabase-js@2/dist/umd/supabase.min.js"
+        onerror="var s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js';document.head.appendChild(s);">
+</script>
+<!-- Config -->
 <script>
-// ⚠️ 请在 Supabase 控制台获取以下两个值，替换后部署
 window.SUPABASE_URL = 'https://hdlvkegvgozvvrlzteok.supabase.co';
 window.SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhkbHZrZXZnb3d6dnZybHp0ZW9rIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA5ODA3NjcsImV4cCI6MjA5NjU1Njc2N30.pbbw-0oJMN55Qh00A_iiysx2VXiBvOffWncWNYexV7s';
 </script>
