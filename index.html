@@ -15,8 +15,8 @@
     <h1>企业集合管理</h1>
     <p class="sub">登录以查看和管理企业数据</p>
     <div class="login-field">
-      <label>用户名</label>
-      <input type="text" id="loginUser" placeholder="请输入用户名" autocomplete="username">
+      <label>邮箱</label>
+      <input type="email" id="loginUser" placeholder="请输入邮箱" autocomplete="email">
     </div>
     <div class="login-field">
       <label>密码</label>
@@ -24,7 +24,7 @@
     </div>
     <button class="login-btn" onclick="doLogin()">登 录</button>
     <div class="login-error" id="loginError"></div>
-    <p class="login-info">使用 Supabase 账号登录 | 首次使用请查看下方部署指南</p>
+    <p class="login-info">使用 Supabase 邮箱账号登录 | 首次使用请先在 Supabase 后台创建用户</p>
   </div>
 </div>
 
@@ -84,8 +84,8 @@
 <script src="supabase.min.js"></script>
 <!-- Supabase Config -->
 <script>
-window.SUPABASE_URL = 'https://hdlvkegvgozvvrlzteok.supabase.co';
-window.SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhkbHZrZXZnb3d6dnZybHp0ZW9rIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA5ODA3NjcsImV4cCI6MjA5NjU1Njc2N30.pbbw-0oJMN55Qh00A_iiysx2VXiBvOffWncWNYexV7s';
+window.SUPABASE_URL = 'https://eoysdsmsyeaflhxcczr.supabase.co';
+window.SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVveXNkc21zeXllYWZsaHhjY3pyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA5OTIxNTEsImV4cCI6MjA5NjU2ODE1MX0.cFr-1w57reS7RctYAbJmxx0QPAq88JAD0VJeM__CL-o';
 </script>
 <!-- App Logic -->
 <script src="app.js"></script>
