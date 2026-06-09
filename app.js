@@ -8,7 +8,7 @@ if (typeof supabase === 'undefined' || !window.SUPABASE_URL || window.SUPABASE_U
   document.querySelector('.login-btn').disabled = true;
   throw new Error('Supabase SDK not loaded or config missing');
 }
-const sb = sb.createClient(window.SUPABASE_URL, window.SUPABASE_KEY);
+const sb = supabase.createClient(window.SUPABASE_URL, window.SUPABASE_KEY);
 
 let currentUser = null;
 let currentRole = 'user';
@@ -65,7 +65,7 @@ async function checkAuth() {
 // ── Load user role ────────────────────────────────
 async function loadUserRole() {
   if (!currentUser) return;
-  const { data } = await supabase
+  const { data } = await sb
     .from('user_roles')
     .select('role')
     .eq('user_id', currentUser.id)
