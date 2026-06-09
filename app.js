@@ -3,12 +3,17 @@
    ════════════════════════════════════════════════════ */
 
 // ── Supabase Client ───────────────────────────────
-if (typeof supabase === 'undefined' || !window.SUPABASE_URL || window.SUPABASE_URL.includes('YOUR-')) {
-  document.getElementById('loginError').textContent = '系统初始化失败，请刷新页面重试。如持续出现请检查 Supabase 配置。';
+if (typeof supabase === 'undefined') {
+  document.getElementById('loginError').textContent = 'SDK 加载失败，请刷新页面重试。';
   document.querySelector('.login-btn').disabled = true;
-  throw new Error('Supabase SDK not loaded or config missing');
+  throw new Error('Supabase SDK not loaded');
 }
-const sb = supabase.createClient(window.SUPABASE_URL, window.SUPABASE_KEY);
+if (!window.SUPABASE_URL || window.SUPABASE_URL.includes('YOUR-')) {
+  document.getElementById('loginError').textContent = 'Supabase 配置缺失，请检查部署设置。';
+  document.querySelector('.login-btn').disabled = true;
+  throw new Error('Supabase config missing');
+}
+var sb = supabase.createClient(window.SUPABASE_URL, window.SUPABASE_KEY);
 
 let currentUser = null;
 let currentRole = 'user';
