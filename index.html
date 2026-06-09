@@ -80,15 +80,35 @@
 <!-- ═══ Confirm ═══ -->
 <div id="confirmContainer"></div>
 
-<!-- Supabase SDK (首选 CDN + 备用 CDN) -->
-<script src="https://unpkg.com/@supabase/supabase-js@2/dist/umd/supabase.min.js"
-        onerror="var s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js';document.head.appendChild(s);">
+<!-- Supabase SDK — 多 CDN 容错加载 -->
+<script>
+(function loadSupabase(cdns, idx) {
+  if (idx >= cdns.length) {
+    // 全部 CDN 失败，显示错误
+    document.getElementById('loginError').textContent = '网络加载失败，请刷新页面重试。若持续出现请检查网络连接。';
+    document.querySelector('.login-btn').disabled = true;
+    return;
+  }
+  var s = document.createElement('script');
+  s.src = cdns[idx];
+  s.onload = function() {
+    // SDK 加载成功 → 加载 app.js
+    var app = document.createElement('script');
+    app.src = 'app.js';
+    document.head.appendChild(app);
+  };
+  s.onerror = function() { loadSupabase(cdns, idx + 1); };
+  document.head.appendChild(s);
+})([
+  'https://unpkg.com/@supabase/supabase-js@2/dist/umd/supabase.min.js',
+  'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js',
+  'https://ga.jspm.io/npm:@supabase/supabase-js@2/dist/umd/supabase.min.js'
+], 0);
 </script>
 <!-- Config -->
 <script>
 window.SUPABASE_URL = 'https://hdlvkegvgozvvrlzteok.supabase.co';
 window.SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhkbHZrZXZnb3d6dnZybHp0ZW9rIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA5ODA3NjcsImV4cCI6MjA5NjU1Njc2N30.pbbw-0oJMN55Qh00A_iiysx2VXiBvOffWncWNYexV7s';
 </script>
-<script src="app.js"></script>
 </body>
 </html>
