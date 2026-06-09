@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>企业集合后台管理系统</title>
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<!-- ═══ Login Page ═══ -->
+<div id="loginPage" class="login-wrapper">
+  <div class="login-card">
+    <h1>企业后台</h1>
+    <p class="sub">请登录以查看企业数据</p>
+    <div class="login-field">
+      <label>用户名</label>
+      <input type="text" id="loginUser" placeholder="请输入用户名" autocomplete="username">
+    </div>
+    <div class="login-field">
+      <label>密码</label>
+      <input type="password" id="loginPass" placeholder="请输入密码" autocomplete="current-password">
+    </div>
+    <button class="login-btn" onclick="doLogin()">登 录</button>
+    <div class="login-error" id="loginError"></div>
+    <p class="login-info">使用 Supabase 账号登录 | 首次使用请查看下方部署指南</p>
+  </div>
+</div>
+
+<!-- ═══ App ═══ -->
+<div id="appPage" class="app-wrap app-hidden">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="side-logo">🏢 企业后台 <span>v2.0</span></div>
+    <nav class="side-nav">
+      <div class="side-item active" data-page="dashboard" onclick="switchPage('dashboard')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+        <span>企业总览</span>
+      </div>
+      <div class="side-item" data-page="users" onclick="switchPage('users')" id="navUsers">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+        <span>用户管理</span>
+      </div>
+    </nav>
+    <div class="side-footer">
+      <div class="user-name" id="currentUser">admin</div>
+      <div class="logout-btn" onclick="doLogout()">退出登录</div>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <main class="main-area">
+
+    <!-- Top Bar -->
+    <header class="top-bar">
+      <h2 id="pageTitle">企业总览</h2>
+      <div class="top-search"><input type="text" id="searchInput" placeholder="搜索企业名称…" oninput="doSearch()"></div>
+      <button class="btn btn-outline btn-sm" onclick="downloadTemplate()">📥 模板</button>
+      <button class="btn btn-outline btn-sm" onclick="showImport()">📤 导入</button>
+      <button class="btn btn-primary btn-sm" onclick="showCompanyForm()">+ 添加企业</button>
+    </header>
+
+    <div class="content" id="contentArea"></div>
+
+  </main>
+</div>
+
+<!-- ═══ Detail Panel ═══ -->
+<div id="detailPanel" class="app-hidden"></div>
+
+<!-- ═══ Modal Container ═══ -->
+<div id="modalContainer"></div>
+
+<!-- ═══ Toast ═══ -->
+<div id="toastContainer"></div>
+
+<!-- ═══ Confirm ═══ -->
+<div id="confirmContainer"></div>
+
+<!-- Supabase SDK -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<!-- Config: 部署前替换为你的 Supabase 项目信息 -->
+<script>
+// ⚠️ 请在 Supabase 控制台获取以下两个值，替换后部署
+window.SUPABASE_URL = 'https://YOUR-PROJECT.supabase.co';
+window.SUPABASE_KEY = 'YOUR-ANON-KEY';
+</script>
+<script src="/app.js"></script>
+</body>
+</html>
