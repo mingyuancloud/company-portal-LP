@@ -3,7 +3,12 @@
    ════════════════════════════════════════════════════ */
 
 // ── Supabase Client ───────────────────────────────
-const supabase = supabase.createClient(window.SUPABASE_URL, window.SUPABASE_KEY);
+if (typeof supabase === 'undefined' || !window.SUPABASE_URL || window.SUPABASE_URL.includes('YOUR-')) {
+  document.getElementById('loginError').textContent = '系统初始化失败，请刷新页面重试。如持续出现请检查 Supabase 配置。';
+  document.querySelector('.login-btn').disabled = true;
+  throw new Error('Supabase SDK not loaded or config missing');
+}
+const sb = sb.createClient(window.SUPABASE_URL, window.SUPABASE_KEY);
 
 let currentUser = null;
 let currentRole = 'user';
@@ -26,7 +31,7 @@ async function doLogin() {
   errEl.textContent = '';
 
   try {
-    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+    const { data, error } = await sb.auth.signInWithPassword({ email, password });
     if (error) throw error;
     currentUser = data.user;
     await loadUserRole();
@@ -38,7 +43,7 @@ async function doLogin() {
 
 // ── Auth: Logout ──────────────────────────────────
 async function doLogout() {
-  await supabase.auth.signOut();
+  await sb.auth.signOut();
   currentUser = null;
   currentRole = 'user';
   document.getElementById('loginPage').classList.remove('app-hidden');
@@ -49,7 +54,7 @@ async function doLogout() {
 
 // ── Auth: Check existing session ──────────────────
 async function checkAuth() {
-  const { data } = await supabase.auth.getSession();
+  const { data } = await sb.auth.getSession();
   if (data && data.session) {
     currentUser = data.session.user;
     await loadUserRole();
@@ -105,7 +110,7 @@ var filterData = { bizs: [], stages: [] };
 async function loadDashboard() {
   var search = document.getElementById('searchInput') ? document.getElementById('searchInput').value : '';
 
-  var query = supabase.from('companies').select('*').order('updated_at', { ascending: false });
+  var query = sb.from('companies').select('*').order('updated_at', { ascending: false });
 
   if (activeFilters.region) query = query.eq('region', activeFilters.region);
   if (activeFilters.biz)    query = query.eq('biz', activeFilters.biz);
@@ -118,7 +123,7 @@ async function loadDashboard() {
     allCompanies = result.data || [];
 
     // Stats
-    var all = await supabase.from('companies').select('region,biz');
+    var all = await sb.from('companies').select('region,biz');
     var rows = all.data || [];
     var domestic = rows.filter(function(r) { return r.region === '国内'; }).length;
     var overseas = rows.filter(function(r) { return r.region === '海外'; }).length;
@@ -348,10 +353,10 @@ async function saveCompany(id) {
   try {
     var result;
     if (id) {
-      result = await supabase.from('companies').update(data).eq('id', id);
+      result = await sb.from('companies').update(data).eq('id', id);
     } else {
       data.created_by = currentUser.id;
-      result = await supabase.from('companies').insert(data);
+      result = await sb.from('companies').insert(data);
     }
     if (result.error) throw result.error;
     toast(id ? '企业已更新' : '企业已添加');
@@ -383,7 +388,7 @@ function confirmDelete(id) {
 
 async function doDelete(id) {
   try {
-    var result = await supabase.from('companies').delete().eq('id', id);
+    var result = await sb.from('companies').delete().eq('id', id);
     if (result.error) throw result.error;
     toast('已删除');
     document.getElementById('confirmContainer').innerHTML = '';
@@ -486,7 +491,7 @@ function doImportFile(file) {
     }
 
     try {
-      var result = await supabase.from('companies').insert(rows);
+      var result = await sb.from('companies').insert(rows);
       if (result.error) throw result.error;
       document.getElementById('importResult').innerHTML = '<div class="import-result success">✅ 成功导入 ' + rows.length + ' 家企业</div>';
       setTimeout(function() { closeModal(); loadDashboard(); }, 1500);
@@ -505,7 +510,7 @@ async function loadUsers() {
 
   try {
     // Fetch user_roles with auth user info (limited - can't list all users from client)
-    var result = await supabase.from('user_roles').select('id, user_id, role, created_at');
+    var result = await sb.from('user_roles').select('id, user_id, role, created_at');
     if (result.error) throw result.error;
 
     var roles = result.data || [];
@@ -513,7 +518,7 @@ async function loadUsers() {
     // Get current user email
     var html =
       '<div style="max-width:600px;">' +
-        '<p style="font-size:13px;color:var(--text2);margin-bottom:16px;">👋 管理员可通过 <a href="https://supabase.com/dashboard" target="_blank" style="color:var(--blue);">Supabase 控制台</a> → Authentication → Add User 来创建新用户。</p>' +
+        '<p style="font-size:13px;color:var(--text2);margin-bottom:16px;">👋 管理员可通过 <a href="https://sb.com/dashboard" target="_blank" style="color:var(--blue);">Supabase 控制台</a> → Authentication → Add User 来创建新用户。</p>' +
         '<p style="font-size:13px;color:var(--text2);margin-bottom:16px;">在 Supabase SQL Editor 中执行以下 SQL 可将用户设为管理员：<br>' +
         '<code style="display:block;padding:8px 12px;background:var(--bg2);border-radius:6px;margin-top:6px;font-size:12px;">UPDATE user_roles SET role = \'admin\' WHERE user_id = \'USER-UUID\';</code></p>' +
 
@@ -550,7 +555,7 @@ async function changeMyPwd() {
   var msg = document.getElementById('pwdMsg');
   if (!newPwd || newPwd.length < 6) { msg.innerHTML = '<span style="color:var(--red)">请输入至少6位的新密码</span>'; return; }
   try {
-    var result = await supabase.auth.updateUser({ password: newPwd });
+    var result = await sb.auth.updateUser({ password: newPwd });
     if (result.error) throw result.error;
     msg.innerHTML = '<span style="color:var(--green)">密码修改成功</span>';
     document.getElementById('pwd-new').value = '';
